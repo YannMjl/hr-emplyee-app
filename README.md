@@ -29,3 +29,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## License
 
 this is where the license info will go
+
+Hi my name is Yann
