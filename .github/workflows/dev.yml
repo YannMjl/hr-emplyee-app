@@ -28,7 +28,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@master
         with:
-          node-version: '10.x'
+          node-version: '14.x'
 
       # install applicaion dependencies
       - name: Install Dependencies & angular
