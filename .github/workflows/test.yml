@@ -67,4 +67,4 @@ jobs:
 
       # run a set of test commands
       - name: build
-        run: ng test
+        run: echo 'this is a test'
