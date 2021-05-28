@@ -76,7 +76,7 @@ jobs:
 
     # test only if build success
     needs: [buildBeforeTest, testBeforeDeploy]
-    if: githbub.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -116,7 +116,7 @@ jobs:
     # deploy docker image to dicker hub only if build and test success
     needs: [buildBeforeTest, testBeforeDeploy]
     # only if pull request merge was approved
-    if: githbub.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
