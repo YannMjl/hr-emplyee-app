@@ -17,29 +17,29 @@ on:
 jobs:
   # This workflow contains jobs
   #build the app
-  buildBeforeTest:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  # buildBeforeTest:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checks-out Repo
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@master
-        with:
-          node-version: '14.x'
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checks-out Repo
+  #       uses: actions/checkout@v2
+  #     - name: Setup node
+  #       uses: actions/setup-node@master
+  #       with:
+  #         node-version: '14.x'
 
-      # install applicaion dependencies
-      - name: Install Dependencies & angular
-        run: |
-          npm install
-          npm install -g @angular/cli 
+  #     # install applicaion dependencies
+  #     - name: Install Dependencies & angular
+  #       run: |
+  #         npm install
+  #         npm install -g @angular/cli 
 
-      # run a set of build commands
-      - name: build
-        run: ng build
+  #     # run a set of build commands
+  #     - name: build
+  #       run: ng build
 
   # test our application       
   test:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # test only if build success
-    needs: [buildBeforeTest]
+    # needs: [buildBeforeTest]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
