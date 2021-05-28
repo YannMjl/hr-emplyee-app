@@ -66,5 +66,5 @@ jobs:
           npm install -g @angular/cli 
 
       # run a set of test commands
-      - name: build
+      - name: test
         run: echo 'this is a test'
