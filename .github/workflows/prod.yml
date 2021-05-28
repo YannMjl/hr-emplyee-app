@@ -5,11 +5,11 @@ name: CI/CD Pipeline
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ dev ]
+  # push:
+  #   branches: [ dev ]
   pull_request:
     types: [closed]
-    branches: [ test, main ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,66 +17,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains jobs
-  #build the app
-  buildBeforeTest:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checks-out Repo
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@master
-        with:
-          node-version: '14.x'
-
-      # install applicaion dependencies
-      - name: Install Dependencies & angular
-        run: |
-          npm install
-          npm install -g @angular/cli 
-
-      # run a set of build commands
-      - name: build
-        run: ng build --prod
-
-  # test our application       
-  testBeforeDeploy:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # test only if branche is test and pull request is approved or merged
-    if: github.ref == 'refs/heads/test'
-      
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checks-out Repo
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@master
-        with:
-          node-version: '14.x'
-
-      # install applicaion dependencies
-      - name: Install Dependencies & angular
-        run: |
-          npm install
-          npm install -g @angular/cli 
-
-      # run a set of test commands
-      - name: Testing
-        run: echo 'Test Completed!'
   # deploy the live application      
   firebase_deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # test only if build success
-    # needs: [buildBeforeTest, testBeforeDeploy]
+    # only if pull request is merged
     if: github.event.pull_request.merged == true 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -114,7 +60,6 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # deploy docker image to dicker hub only main branche
     # only if pull request merge was approved
     if: github.event.pull_request.merged == true 
 
