@@ -1,15 +1,15 @@
 # This is a basic workflow to help you get started with Actions
 
-name: prod CI/CD
+name: CI/CD Pipeline
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  # push:
-  #   branches: [ main ]
+  push:
+    branches: [ dev ]
   pull_request:
     types: [closed]
-    branches: [ main ]
+    branches: [ test, main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,6 +21,7 @@ jobs:
   buildBeforeTest:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -47,9 +48,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # test only if build success
-    needs: [buildBeforeTest]
-
+    # test only if branche is test and pull request is approved or merged
+    if: github.ref == 'refs/heads/test' && github.event.pull_request.merged == true
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -67,16 +67,16 @@ jobs:
           npm install -g @angular/cli 
 
       # run a set of test commands
-      - name: build
-        run: echo 'this is a test'
+      - name: Testing
+        run: echo 'Test Completed!'
   # deploy the live application      
   firebase_deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # test only if build success
-    needs: [buildBeforeTest, testBeforeDeploy]
-    if: github.event.pull_request.merged == true
+    # needs: [buildBeforeTest, testBeforeDeploy]
+    if: github.event.pull_request.merged == true && github.ref == 'refs/heads/main'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -113,10 +113,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # deploy docker image to dicker hub only if build and test success
-    needs: [buildBeforeTest, testBeforeDeploy]
+    # deploy docker image to dicker hub only main branche
     # only if pull request merge was approved
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && github.ref == 'refs/heads/main'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -152,5 +151,8 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: hr-app:v1.0.0
-      
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hr-app-demo:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+        
