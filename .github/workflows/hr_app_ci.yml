@@ -49,7 +49,9 @@ jobs:
     runs-on: ubuntu-latest
 
     # test only if branche is test and pull request is approved or merged
-    if: github.ref == 'refs/heads/test' && github.event.pull_request.merged == true
+    if: |
+      github.ref == 'refs/heads/test' && 
+      github.event.pull_request.merged == true
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -76,7 +78,9 @@ jobs:
 
     # test only if build success
     # needs: [buildBeforeTest, testBeforeDeploy]
-    if: github.event.pull_request.merged == true && github.ref == 'refs/heads/main'
+    if: |
+      github.ref == 'refs/heads/main' && 
+      github.event.pull_request.merged == true 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -115,7 +119,9 @@ jobs:
 
     # deploy docker image to dicker hub only main branche
     # only if pull request merge was approved
-    if: github.event.pull_request.merged == true && github.ref == 'refs/heads/main'
+    if: |
+      github.ref == 'refs/heads/main' && 
+      github.event.pull_request.merged == true 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
