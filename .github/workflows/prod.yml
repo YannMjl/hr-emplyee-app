@@ -97,7 +97,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hr-app-demo:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hr-app-demo:v1.0.0.0
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
